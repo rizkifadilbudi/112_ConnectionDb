@@ -17,7 +17,7 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "mahasiswa",
-  password: "",
+  password: process.env.PASSWORD,
   port: 5432,
 });
 
@@ -29,6 +29,6 @@ app.get("/", (req, res, next) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);
 });
