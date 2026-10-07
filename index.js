@@ -1,6 +1,8 @@
 import express from "express";
 import pg from "pg";
-import "dotenv/config";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -17,16 +19,22 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "mahasiswa",
-  password: process.env.PASSWORD,
+  password: String(process.env.PASSWORD),
   port: 5432,
 });
 
 app.get("/", (req, res, next) => {
   console.log("[REST DATA :");
-  pool.query("Select * from biodata").then((testData) => {
-    console.log(testData);
-    res.send(500).send("Internal Server Error");
-  });
+  pool
+    .query("Select * from biodata")
+    .then((testData) => {
+      console.log(testData);
+      res.send(testData.rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
 });
 
 app.listen(PORT, () => {
